@@ -2,10 +2,9 @@
 import db from "./db.js"; 
 import express from "express";
 const app = express.Router();
+//get all students
 app.get("/getstudents", (req, res) => {
 const q = "SELECT * FROM student";
-
-//get all students
   db.query(q, (err, data) => {
     if (err) {
       return res.status(500).json({ message: "Database error", error: err });
@@ -56,7 +55,7 @@ app.post("/addstudents", (req, res) => {
     } else {
       return res.status(201).json({
         message: "Student added successfully",
-        
+
 
         
       });
