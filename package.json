@@ -4,7 +4,6 @@
   "description": "this repository displays the backend files of the students portal web project presented in the \"web_project\" repository",
   "main": "index.js",
   "type": "module",
- 
   "scripts": {
     "start": "node --watch index.js",
     "startnodemon": "nodemon index.js"
