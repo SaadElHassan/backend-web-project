@@ -1,0 +1,28 @@
+{
+  "name": "backend-web-project",
+  "version": "1.0.0",
+  "description": "this repository displays the backend files of the students portal web project presented in the \"web_project\" repository",
+  "main": "index.js",
+  "type": "module",
+ 
+  "scripts": {
+    "start": "node --watch index.js",
+    "startnodemon": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaadElHassan/backend-web-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SaadElHassan/backend-web-project/issues"
+  },
+  "homepage": "https://github.com/SaadElHassan/backend-web-project#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "mysql": "^2.18.1"
+  }
+}
