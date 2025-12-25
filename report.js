@@ -49,7 +49,7 @@ app.post("/addreports", (req, res) => {
       return res.status(500).json({ message: "Database error", error: err });
     } else {
       return res.status(201).json({
-        message: "Report has been successfully",
+        message: "Report has been sent successfully",
         id: data.insertId,
 
         

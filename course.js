@@ -15,6 +15,21 @@ app.get("/getcourses", (req, res) => {
     }
   });
 });
+//get all courses names
+app.get("/getcoursesnames", (req, res) => {
+  const q = "SELECT name FROM course";
+//get all courses
+  db.query(q, (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: "Database error", error: err });
+    } else {
+      if (data.length === 0) {
+        return res.status(204).send("No course found");
+      }
+      return res.status(200).json(data);
+    }
+  });
+});
 //add new course
 app.post("/addstudents", (req, res) => {
   if (!req.body) {
