@@ -17,7 +17,7 @@ const q = "SELECT * FROM student";
   });
 });
 //add new student
-app.post("/addstudents", (req, res) => {
+app.post("/addstudent", (req, res) => {
   if (!req.body) {
     return res.status(400).send("Request body is missing");
   }
@@ -28,6 +28,7 @@ app.post("/addstudents", (req, res) => {
     if (!student_id) {
     errors.push("Student ID is required");
   }
+
   if (!password) {
     errors.push("Password is required");
   }
@@ -39,6 +40,9 @@ app.post("/addstudents", (req, res) => {
   }
   if (!major) {
     errors.push("Major is required");
+  }
+  if (isNaN(Number(student_id))) {
+    return res.status(400).json({ message: "Student ID must be a number" });
   }
   if (errors.length > 0) {
     return res.status(400).json({ message: errors });
@@ -55,10 +59,36 @@ app.post("/addstudents", (req, res) => {
     } else {
       return res.status(201).json({
         message: "Student added successfully",
-
+       id: data.insertId,
 
         
       });
+    }
+  });
+});
+
+//delete student
+app.delete("/deletestudents/:id", (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: "Student ID is required" });
+  }
+
+  if (isNaN(Number(id))) {
+    return res.status(400).json({ message: "Student ID must be a number" });
+  }
+
+  const q = "DELETE FROM student WHERE student_id = ?";
+
+  db.query(q, [id], (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: "Database error", error: err });
+    } else {
+      if (data.affectedRows === 0) {
+        return res.status(404).json({ message: "Student not found" });
+      }
+      return res.status(200).json({ message: "Student deleted successfully" });
     }
   });
 });
