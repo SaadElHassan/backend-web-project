@@ -1,9 +1,10 @@
 import db from "./db.js"; 
 import express from "express";
 const app = express.Router();
+//get all courses without password
+
 app.get("/getcourses", (req, res) => {
   const q = "SELECT * FROM course";
-//get all courses
   db.query(q, (err, data) => {
     if (err) {
       return res.status(500).json({ message: "Database error", error: err });
