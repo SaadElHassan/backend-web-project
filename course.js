@@ -19,7 +19,7 @@ app.get("/getcourses", (req, res) => {
 //get all courses names
 app.get("/getcoursesnames", (req, res) => {
   const q = "SELECT name FROM course";
-//get all courses
+
   db.query(q, (err, data) => {
     if (err) {
       return res.status(500).json({ message: "Database error", error: err });

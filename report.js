@@ -57,3 +57,24 @@ app.post("/addreports", (req, res) => {
     }
   });
 });
+
+//delete report by name
+app.delete("/deletereport/:name", (req, res) => {
+  const { name } = req.params;
+  if (!name) {
+    return res.status(400).json({ message: "Report name is required" });
+  }
+
+  const q = "DELETE FROM report WHERE name = ?";
+
+  db.query(q, [name], (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: "Database error", error: err });
+    } else {
+      if (data.affectedRows === 0) {
+        return res.status(404).json({ message: "Report not found" });
+      }
+      return res.status(200).json({ message: "Report deleted successfully" });
+    }
+  });
+});
