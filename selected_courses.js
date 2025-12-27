@@ -1,9 +1,8 @@
 import db from "./db.js"; 
 import express from "express";
 const app = express.Router();
-//get all courses
-
-app.get("/getcourses", (req, res) => {
+//get all selected courses
+app.get("/getselectedcourses", (req, res) => {
   const q = "SELECT * FROM course";
   db.query(q, (err, data) => {
     if (err) {
@@ -16,23 +15,8 @@ app.get("/getcourses", (req, res) => {
     }
   });
 });
-//get all courses names
-app.get("/getcoursesnames", (req, res) => {
-  const q = "SELECT name FROM course";
-//get all courses
-  db.query(q, (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: "Database error", error: err });
-    } else {
-      if (data.length === 0) {
-        return res.status(204).send("No course found");
-      }
-      return res.status(200).json(data);
-    }
-  });
-});
-//add new course
-app.post("/addcourse", (req, res) => {
+//add new selected course
+app.post("/addselectedcourse", (req, res) => {
   if (!req.body) {
     return res.status(400).send("Request body is missing");
   }
@@ -67,8 +51,8 @@ app.post("/addcourse", (req, res) => {
     }
   });
 });
-//delete course
-app.delete("/deletecourse/:name", (req, res) => {
+//delete selected course
+app.delete("/deleteselectedcourse/:name", (req, res) => {
   const { name } = req.params;
 
   if (!name) {
@@ -82,32 +66,11 @@ app.delete("/deletecourse/:name", (req, res) => {
       return res.status(500).json({ message: "Database error", error: err });
     } else {
       if (data.affectedRows === 0) {
-        return res.status(404).json({ message: "course not found" });
+        return res.status(404).json({ message: "Selected course not found" });
       }
-      return res.status(200).json({ message: "course deleted successfully" });
+      return res.status(200).json({ message: "Selected course deleted successfully" });
     }
   });
 });
 
-//get course by name
-app.get("/courses/getcoursesbyname/:name", (req, res) => {
-  const name = req.params.name;
-
-  if (!name) {
-    return res.status(400).json({ message: "Course name is required" });
-  }
-
-  const q = "SELECT description FROM course WHERE name = ?";
-
-  db.query(q, [name], (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: "Database error", error: err });
-    } else {
-      if (data.length === 0) {
-        return res.status(404).json({ message: "Course not found" });
-      }
-      return res.status(200).json(data[0]);
-    }
-  });
-});
 export default app;
