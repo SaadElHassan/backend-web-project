@@ -50,7 +50,7 @@ app.post("/addreports", (req, res) => {
     } else {
       return res.status(201).json({
         message: "Report has been sent successfully",
-        id: data.insertId,
+     
 
         
       });

@@ -3,7 +3,7 @@ import express from "express";
 const app = express.Router();
 //get all selected courses
 app.get("/getselectedcourses", (req, res) => {
-  const q = "SELECT * FROM course";
+  const q = "SELECT * FROM selected_courses";
   db.query(q, (err, data) => {
     if (err) {
       return res.status(500).json({ message: "Database error", error: err });
@@ -34,7 +34,7 @@ app.post("/addselectedcourse", (req, res) => {
     return res.status(400).json({ message: errors });
   }
   const q =
-    "INSERT INTO course (name, description) VALUES (?, ?)";
+    "INSERT INTO selected_courses (name, description) VALUES (?, ?)";
 
   db.query(q, [name, description], (err, data) => {
     if (err) {
@@ -45,7 +45,7 @@ app.post("/addselectedcourse", (req, res) => {
     } else {
       return res.status(201).json({
         message: "course added successfully",
-         id: data.insertId,
+         
         
       });
     }
@@ -59,7 +59,7 @@ app.delete("/deleteselectedcourse/:name", (req, res) => {
     return res.status(400).json({ message: "Course name is required" });
   }
 
-  const q = "DELETE FROM course WHERE name = ?";
+  const q = "DELETE FROM selected_courses WHERE name = ?";
 
   db.query(q, [name], (err, data) => {
     if (err) {

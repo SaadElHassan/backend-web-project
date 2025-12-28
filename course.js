@@ -16,21 +16,7 @@ app.get("/getcourses", (req, res) => {
     }
   });
 });
-//get all courses names
-app.get("/getcoursesnames", (req, res) => {
-  const q = "SELECT name FROM course";
 
-  db.query(q, (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: "Database error", error: err });
-    } else {
-      if (data.length === 0) {
-        return res.status(204).send("No course found");
-      }
-      return res.status(200).json(data);
-    }
-  });
-});
 //add new course
 app.post("/addcourse", (req, res) => {
   if (!req.body) {
@@ -61,7 +47,7 @@ app.post("/addcourse", (req, res) => {
     } else {
       return res.status(201).json({
         message: "course added successfully",
-         id: data.insertId,
+       
         
       });
     }
@@ -74,30 +60,37 @@ app.delete("/deletecourse/:name", (req, res) => {
   if (!name) {
     return res.status(400).json({ message: "Course name is required" });
   }
+  const q1 = "DELETE FROM selected_courses WHERE name = ?";
+  const q2 = "DELETE FROM course WHERE name = ?";
 
-  const q = "DELETE FROM course WHERE name = ?";
-
-  db.query(q, [name], (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: "Database error", error: err });
-    } else {
-      if (data.affectedRows === 0) {
-        return res.status(404).json({ message: "course not found" });
-      }
-      return res.status(200).json({ message: "course deleted successfully" });
+  // First, delete from selected_courses
+  db.query(q1, [name], (err1, data1) => {
+    if (err1) {
+      return res.status(500).json({ message: "Database error", error: err1 });
     }
+    // Then, delete from course
+    db.query(q2, [name], (err2, data2) => {
+      if (err2) {
+        return res.status(500).json({ message: "Database error", error: err2 });
+      } else {
+        if (data2.affectedRows === 0) {
+          return res.status(404).json({ message: "course not found" });
+        }
+        return res.status(200).json({ message: "course deleted successfully" });
+      }
+    });
   });
 });
 
 //get course by name
-app.get("/courses/getcoursesbyname/:name", (req, res) => {
+app.get("/getcoursesbyname/:name", (req, res) => {
   const name = req.params.name;
 
   if (!name) {
     return res.status(400).json({ message: "Course name is required" });
   }
 
-  const q = "SELECT description FROM course WHERE name = ?";
+  const q = "SELECT * FROM course WHERE name = ?";
 
   db.query(q, [name], (err, data) => {
     if (err) {
