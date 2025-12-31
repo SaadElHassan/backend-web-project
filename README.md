@@ -1,64 +1,53 @@
-# web_project
+# backend-web-project
 
-This repository contains a small React single-page application (SPA) built with Create React App and Tailwind CSS. The app is a student portal with role-based authentication, featuring 12 UI components under `src/components` including `Navbar`, `Login`, `Welcome`, `Home`, `HomeAdmin`, `About`, `AboutA`, `Registration`, `ContactUs`, `AddCourse`, `AddStudent`, and `Reports`.
+This repository contains the backend Node.js API for the students portal web project presented in the "web_project" repository. It provides REST API endpoints for managing students, courses, course registrations, and reports.
 
 **Tech Stack:**
-- **Framework:** React (v19)
-- **Styling:** Tailwind CSS
-- **Routing:** react-router-dom
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Database:** SQL (using custom db module)
 - **HTTP Client:** axios
-- **Notifications:** react-toastify
-- **Build tools:** react-scripts (Create React App)
-- **Testing:** @testing-library/react, @testing-library/jest-dom
+- **Server:** Express server with CORS support
 
 **Key Features:**
-- **Role-based Authentication:** Two user roles (Student: role=1, Admin: role=2) with protected routes
-- **Context API:** AuthContext for managing authentication state across components
-- **API Integration:** Backend API calls for CRUD operations on students, courses, and reports
-- **Toast Notifications:** Real-time feedback for user actions using react-toastify
+- **Role-based API Endpoints:** Separate endpoints for student and admin operations
+- **Database Integration:** SQL database connectivity for persistent data storage
+- **Course Management:** CRUD operations for courses (admin only)
+- **Student Management:** CRUD operations for students (admin only)
+- **Course Registration:** Students can register and unregister from courses
+- **Reports:** Generate and manage student and course reports
 
 **Project structure (important files):**
-- `src/` — React source files
-- `src/App.js` — main application with routing and authentication logic
-- `src/components/` — page and UI components (12 components total)
-- `public/index.html` — app HTML entry
-- `tailwind.config.js` — Tailwind configuration
-- `.env` — environment variables (REACT_APP_API_URL for backend API)
+- `index.js` — main Express server entry point with route handlers
+- `db.js` — database connection and SQL query utilities
+- `user.js` — user authentication and management endpoints
+- `course.js` — course management endpoints
+- `selected_courses.js` — course registration/enrollment endpoints
+- `report.js` — report generation and management endpoints
+- `package.json` — project dependencies and scripts
 
-**Components**
+**API Endpoints**
 
-*Shared Components:*
-- `src/components/Navbar.jsx`: top navigation bar with links to pages and a logout action.
-- `src/components/Login.jsx`: login form that authenticates users and sets their role (student or admin).
-- `src/components/Welcome.jsx`: welcome screen displayed to authenticated users upon initial access.
+*Authentication:*
+- `POST /login` — authenticate user and return user role and ID
 
-*Student Role Components (role=1):*
-- `src/components/Home.jsx`: student landing page with navigation cards to other sections (About, Contact, Registration).
-- `src/components/About.jsx`: explains the student portal purpose and key features.
-- `src/components/Registration.jsx`: course selection and registration UI; shows registered courses and allows removal.
-- `src/components/ContactUs.jsx`: contact form to send messages and view contact details.
+*Student Endpoints (role=1):*
+- `GET /student/courses` — retrieve available courses for registration
+- `POST /student/register` — register student in a course
+- `GET /student/registered` — get list of courses student is registered for
+- `DELETE /student/register/:courseId` — unregister from a course
+- `GET /student/reports` — retrieve student reports
 
-*Admin Role Components (role=2):*
-- `src/components/HomeAdmin.jsx`: admin dashboard landing page with navigation cards for administrative functions.
-- `src/components/AboutA.jsx`: about page for admin users with additional administrative information.
-- `src/components/AddCourse.jsx`: admin interface to add, view, and manage courses in the system.
-- `src/components/AddStudent.jsx`: admin interface to add, view, and manage students in the system.
-- `src/components/Reports.jsx`: displays and manages student and course reports with delete functionality.
+*Admin Endpoints (role=2):*
+- `GET /admin/students` — retrieve all students
+- `POST /admin/student` — add a new student
+- `DELETE /admin/student/:studentId` — delete a student
+- `GET /admin/courses` — retrieve all courses
+- `POST /admin/course` — add a new course
+- `DELETE /admin/course/:courseId` — delete a course
+- `GET /admin/reports` — retrieve all reports
+- `DELETE /admin/report/:reportId` — delete a report
 
-**Screenshots**
-![Login](public/screenshots/login.png)
-![Welcome](public/screenshots/welcome.png)
-![home](public/screenshots/home.png)
-![about](public/screenshots/about.png)
-![registerOption](public/screenshots/registerOption.png)
-![registerTable](public/screenshots/registerTable.png)
-![contactUs](public/screenshots/contactUs.png)
-![adminHome](public/screenshots/adminHome.png)
-![adminAbout](public/screenshots/adminAbout.png)
-![addcourse](public/screenshots/addcourse.png)
-![addcourse (2)](public/screenshots/addcourse%20(2).png)
-![addstudent](public/screenshots/addstudent.png)
-![addstudent (2)](public/screenshots/addstudent%20(2).png)
 **Setup & Run (local)**
 Prerequisites: Node.js and npm.
 
@@ -74,21 +63,19 @@ Prerequisites: Node.js and npm.
 
 	Create a `.env` file in the project root and add:
 	```
-	REACT_APP_API_URL=<your-backend-api-url>
+	DB_HOST=<your-database-host>
+	DB_USER=<your-database-user>
+	DB_PASSWORD=<your-database-password>
+	DB_NAME=<your-database-name>
+	PORT=<server-port (default: 5000)>
 	```
 
 4. Start the development server:
 
 	`npm start`
 
-	This opens the app at `http://localhost:3000` by default.
+	This starts the backend server at `http://localhost:5000` by default.
 
-5. Build for production:
-
-	`npm run build`
-
-6. Run tests:
+5. Run tests:
 
 	`npm test`
-
-
