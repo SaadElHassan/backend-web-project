@@ -1,9 +1,10 @@
 import mysql from "mysql";
 const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "web2_project",
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "web2_project",
+  port: process.env.DB_PORT || 3306,
 });
 db.getConnection((err) => {
   if (err) {
